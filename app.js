@@ -9,8 +9,9 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', registerRouter);
 app.use('/api', productsRouter);
+app.use('/api', registerRouter)
+
 
 // connect to db
 mongoose.connect(
