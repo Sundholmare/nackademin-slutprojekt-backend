@@ -29,13 +29,15 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     adress: {
-        street: String,
-        zip: String,
-        city: String,
-        required: true,
+        street: { type: String, required: true },
+        zip: { type: String, required: true },
+        city: { type: String, required: true }
     },
+
+
+
     orderHistory: [{ // Ska kopplas med order vilket gör så vi kan använda Populate()
-        type: mongoose.Schema.Types.ObjectId, 
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Order'
     }]
 });
