@@ -1,5 +1,14 @@
-const express = require('express');
-const app = express();
+
+const express = require('express')
+const app = express()
+const registerRouter = require('./router/register')
+
+app.use(express.json());
+app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/', registerRouter)
+
 const mongoose = require('mongoose');
 require('dotenv').config();
 app.use(express.static('public'));
