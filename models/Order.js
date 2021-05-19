@@ -1,21 +1,25 @@
 const mongoose = require('mongoose');
 
+/*
+Populate hämtar data från en annan refererad collection som finns i samma databas. 
+ */
+
 const orderSchema = new mongoose.Schema({
-    _id: mongoose.Types.ObjectId,
-    timeStamp: {
+    _id: mongoose.Types.ObjectId, // mongoose koppling för att kunna använda Populate() functionen senare.
+    timeStamp: { // Sätter tidsmarkering när ordern skapades
         type: Date,
         default: Date.now
     },
-    status: {
+    status: { // Status på ordern om den antingen är påväg, skeppad eller levererad.
         type: Array,
         required: true,
         default: ['inProcess, Shipped, Delivered']
     },
-    items: [{
+    items: [{ // Ska kopplas med products modellen vilket gör så vi kan använda Populate()
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }]
-    // orderValue: {
+    // orderValue: { // teoretisk lösning på orderValue, behöver testas.
     //     $group: {
     //         _id: "$items",
     //         total: {

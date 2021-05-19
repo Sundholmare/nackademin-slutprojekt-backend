@@ -1,8 +1,16 @@
-const express = require('express');
-const app = express();
+
+const express = require('express')
+const app = express()
+const registerRouter = require('./router/register')
+
+app.use(express.json());
+app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/', registerRouter)
+
 const mongoose = require('mongoose');
 
-app.use(express.static('public'));
 
 // connect to db
 mongoose.connect(
