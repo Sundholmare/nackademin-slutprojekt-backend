@@ -1,14 +1,16 @@
-const express = require('express')
-const app = express()
-const registerRouter = require('./router/register')
+const express = require('express');
+const app = express();
+const registerRouter = require('./router/register');
+const productsRouter = require('./router/products');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
 app.use(express.json());
-app.use(express.static('public'))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/', registerRouter)
+app.use('/', registerRouter);
+app.use('/api', productsRouter);
 
 // connect to db
 mongoose.connect(
