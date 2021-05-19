@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
+/*
+Populate hämtar data från en annan refererad collection som finns i samma databas. 
+ */
+
 const userSchema = new mongoose.Schema({
-    _id: mongoose.Types.ObjectId,
+    _id: mongoose.Types.ObjectId, // mongoose koppling för att kunna använda Populate() functionen senare.
     email: {
-        type: String,
+        type: String,// email ska finnas med och ha minst 6 tecken, max 100.
         required: true,
         min: 6,
         max: 100
@@ -30,8 +34,8 @@ const userSchema = new mongoose.Schema({
         city: String,
         required: true,
     },
-    orderHistory: [{
-        type: mongoose.Schema.Types.ObjectId,
+    orderHistory: [{ // Ska kopplas med order vilket gör så vi kan använda Populate()
+        type: mongoose.Schema.Types.ObjectId, 
         ref: 'Order'
     }]
 });
