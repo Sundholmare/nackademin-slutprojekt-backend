@@ -1,4 +1,3 @@
-
 const express = require('express')
 const app = express()
 const registerRouter = require('./router/register')
