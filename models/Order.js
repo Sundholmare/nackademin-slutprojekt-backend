@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-/*
-Populate hämtar data från en annan refererad collection som finns i samma databas. 
- */
+/* Populate hämtar data från en annan refererad collection som finns i samma databas. */
 
 const orderSchema = new mongoose.Schema({
     _id: mongoose.Types.ObjectId, // mongoose koppling för att kunna använda Populate() functionen senare.

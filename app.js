@@ -2,12 +2,14 @@
 const express = require('express')
 const app = express()
 const registerRouter = require('./router/register')
+const orderRouter = require('./router/order')
 
 app.use(express.json());
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/', registerRouter)
+app.use('/', orderRouter)
 
 const mongoose = require('mongoose');
 
