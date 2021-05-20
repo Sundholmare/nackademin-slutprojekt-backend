@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const router = require('./routers/apiRouter')
+const register_Router = require('./router/register')
+const createProduct_Router = require('./router/createProduct')
 const productsRouter = require('./router/products');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -11,8 +12,13 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use('/api', router)
+app.use('/api', register_Router)
+app.use('/api', createProduct_Router)
+
+
+
 app.use('/api', productsRouter);
+
 
 
 
