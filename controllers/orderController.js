@@ -10,6 +10,7 @@ och ägda orders för inloggad användare */
 // Hämta alla ordrar för en speciell användare med hjälp av id
 
 const getOrders = async function(req, res) {
+    // Hämta alla befintliga ordrar och retunera dem
     const orders = await orderModel.find({})
     res.json(orders)
 }
@@ -26,7 +27,7 @@ const getOrders = async function(req, res) {
 } */
 
 const postOrders = function(req, res) {
-    
+
 }
 
 module.exports = {getOrders, postOrders} 

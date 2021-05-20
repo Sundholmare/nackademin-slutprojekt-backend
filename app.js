@@ -1,22 +1,21 @@
 
-const express = require('express')
-const app = express()
-const registerRouter = require('./router/register')
+const express = require('express');
+const app = express();
+const registerRouter = require('./router/register');
+const productsRouter = require('./router/products');
 const orderRouter = require('./router/order')
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 app.use(express.json());
-app.use(express.static('public'))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/', registerRouter)
-app.use('/', orderRouter)
-
-const mongoose = require('mongoose');
-
+app.use('/api', productsRouter, registerRouter, orderRouter);
 
 // connect to db
 mongoose.connect(
-  'mongodb+srv://Eiser:eiser1@cluster0.wafzm.mongodb.net/SinusDB?retryWrites=true&w=majority',
+  process.env.DB_CONNECT,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => console.log('connected to db')
 );

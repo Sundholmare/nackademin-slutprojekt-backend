@@ -4,7 +4,7 @@ const orderController = require('../controllers/orderController')
 
 
 // Routes, där jag importerar get och post requesten från controllern
-Router.get('/api/orders', orderController.getOrders)
-Router.post('/api/orders', orderController.postOrders)
+Router.get('/orders', orderController.getOrders)
+Router.post('/orders', orderController.postOrders)
 
 module.exports = Router
