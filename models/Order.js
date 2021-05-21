@@ -9,9 +9,9 @@ const orderSchema = new mongoose.Schema({
         default: Date.now
     },
     status: { // Status på ordern om den antingen är påväg, skeppad eller levererad.
-        type: Array,
+        type: String,
         required: true,
-        default: ['inProcess, Shipped, Delivered']
+        default: 'inProcess'
     },
     items: [{ // Ska kopplas med products modellen vilket gör så vi kan använda Populate()
         type: mongoose.Schema.Types.ObjectId,

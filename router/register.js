@@ -1,14 +1,24 @@
+const express = require('express')
+const router = express.Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 const mongoose = require('mongoose');
+
+
 // const cookieParser = require('cookie-parser')
 // app.use(cookieParser())
+
+
+
+
+
 const checkRepeatPassword = (pass1, pass2) => {
     if (pass1 === pass2) return true
 }
 
-const registerController = async (req, res) => {
+router.post('/register', (req,res)=>{
+
 
     User.findOne({ $or: [{ name: req.body.name }, { email: req.body.email }] }, function (err, user) {
         if (err) console.log(err)
@@ -48,9 +58,17 @@ const registerController = async (req, res) => {
             } else console.log(`Different passwords`)
         }
     })
-}
 
-module.exports = {
-    registerController
 
-}
+
+})
+
+
+
+
+
+
+
+
+
+module.exports = router;
