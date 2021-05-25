@@ -3,13 +3,14 @@ const express = require('express')
 const router = express.Router()
 const Products = require('../models/Products')
 const mongoose = require('mongoose');
+const loggedIn = require('../middleware/loggedIn')
 
 
 // const cookieParser = require('cookie-parser')
 // app.use(cookieParser())
 
 
-router.post('/products', (req, res) => {
+router.post('/products',loggedIn, (req, res) => {
 
     const newProducts = new Products({
         _id: new mongoose.Types.ObjectId(),

@@ -8,13 +8,15 @@ const userModel = require('../models/User')
 
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
+  console.log(token)
+
   const token = authHeader && authHeader.split(' ')[1]
+  console.log(token)
 
   if (token == null) return res.sendStatus(401)
 
   jwt.verify(token, "hemligfras123treettfemsju", async (err, user) => {
     console.log(err)
-
     if (err) return res.sendStatus(403)
 
     const userModels = await userModel.findOne({ email: user.username })
@@ -22,6 +24,7 @@ async function authenticateToken(req, res, next) {
     req.user = userModels
 
     next()
+
   })
 }
 
