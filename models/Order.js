@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
     _id: mongoose.Types.ObjectId, // mongoose koppling för att kunna använda Populate() functionen senare.
+    userId: { // Skapar ett userId för att kunna ta fram specifika ordrar för den inloggade användaren.
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     timeStamp: { // Sätter tidsmarkering när ordern skapades
         type: Date,
         default: Date.now

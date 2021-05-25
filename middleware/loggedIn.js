@@ -1,10 +1,6 @@
-const jwt = require('jsonwebtoken');
-const userModel = require('../models/User')
+const jwt = require('jsonwebtoken')
 
-/*
-* Verifierar att token är äkta
-* Används EJ just nu
-*/
+const userModel = require('../models/User')
 
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
@@ -17,6 +13,7 @@ async function authenticateToken(req, res, next) {
 
     if (err) return res.sendStatus(403)
 
+    // Retunerar ett object med den första i listan med det usernamet.
     const userModels = await userModel.findOne({ email: user.username })
 
     req.user = userModels
