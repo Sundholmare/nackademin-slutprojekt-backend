@@ -8,7 +8,7 @@ const userModel = require('../models/User')
 
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
-  console.log(token)
+  console.log(authHeader)
 
   const token = authHeader && authHeader.split(' ')[1]
   console.log(token)
