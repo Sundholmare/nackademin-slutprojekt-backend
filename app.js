@@ -9,6 +9,7 @@ const register_Router = require('./router/register')
 const createProduct_Router = require('./router/createProduct')
 const productsRouter = require('./router/products')
 const orderRouter = require('./router/order')
+const authRouter = require('./router/auth')
 
 // Middleware
 app.use(express.json())
@@ -19,6 +20,8 @@ app.use('/api', register_Router)
 app.use('/api', createProduct_Router)
 app.use('/api', productsRouter)
 app.use('/api', orderRouter)
+app.use('/api', authRouter)
+
 
 // connect to db
 mongoose.connect(

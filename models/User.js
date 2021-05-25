@@ -9,20 +9,22 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,// email ska finnas med och ha minst 6 tecken, max 100.
         required: true,
-        min: 6,
-        max: 100
+        minLength : 6,
+        maxLength : 100,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
+
     },
     password: {
         type: String,
         required: true,
-        min: 6,
-        max: 255,
+        minLength : 6,
+        maxLength : 255,
     },
     name: {
         type: String,
         required: true,
-        min: 3,
-        max: 100
+        minLength : 2,
+        maxLength : 100
     },
     role: {
         type: String,

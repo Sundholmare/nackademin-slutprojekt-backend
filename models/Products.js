@@ -9,8 +9,8 @@ const productSchema = new mongoose.Schema({
     title: {
         type: String, // title ska finnas med och ha minst 3 tecken, max 100.
         required: true,
-        min: 3,
-        max: 100
+        minLength : 3,
+        maxLength : 100
     },
     price: {
         type: Number,
@@ -19,14 +19,14 @@ const productSchema = new mongoose.Schema({
     shortDesc: {
         type: String,
         required: true,
-        min: 3,
-        max: 15
+        minLength : 3,
+        maxLength : 15
     },
     longDesc: {
         type: String,
         required: true,
-        min: 15,
-        max: 100
+        minLength : 15,
+        maxLength : 100
     },
     imgFile: {
         type: String,

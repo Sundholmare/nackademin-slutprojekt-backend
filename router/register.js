@@ -6,9 +6,6 @@ const saltRounds = 10
 const mongoose = require('mongoose');
 
 
-// const cookieParser = require('cookie-parser')
-// app.use(cookieParser())
-
 
 
 
@@ -17,9 +14,9 @@ const checkRepeatPassword = (pass1, pass2) => {
     if (pass1 === pass2) return true
 }
 
-router.post('/register', (req,res)=>{
+router.post('/register', (req, res) => {
 
-
+    /* vi kollar först om namn eller mailet för användaren finns redan eller inte */
     User.findOne({ $or: [{ name: req.body.name }, { email: req.body.email }] }, function (err, user) {
         if (err) console.log(err)
         if (user) {
@@ -27,7 +24,9 @@ router.post('/register', (req,res)=>{
             res.end();
         } else {
             console.log(`This is a new user`)
+            /*  Här kollar vi om båda password och repeatPassword är lika */
             if (checkRepeatPassword(req.body.password, req.body.repeatPassword)) {
+                /* om de lika vi hashar lösenordet  och sedan spara den i db*/
                 bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                     if (err) res.json(err)
                     else {
@@ -58,9 +57,6 @@ router.post('/register', (req,res)=>{
             } else console.log(`Different passwords`)
         }
     })
-
-
-
 })
 
 
