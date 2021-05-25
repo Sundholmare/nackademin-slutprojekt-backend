@@ -17,7 +17,7 @@ async function authenticateToken(req, res, next) {
 
     if (err) return res.sendStatus(403)
 
-    const userModels = await userModel.find({ email: user.username })
+    const userModels = await userModel.findOne({ email: user.username })
 
     req.user = userModels
 
