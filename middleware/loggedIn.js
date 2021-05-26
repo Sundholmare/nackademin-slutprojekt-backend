@@ -1,28 +1,28 @@
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/User')
+const userModel = require('../models/User');
 
 /*
-* Verifierar att token är äkta
-* Används EJ just nu
-*/
+ * Verifierar att token är äkta
+ * Används EJ just nu
+ */
 
 async function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-  if (token == null) return res.sendStatus(401)
+  if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, "hemligfras123treettfemsju", async (err, user) => {
-    console.log(err)
+  jwt.verify(token, 'hemligfras123treettfemsju', async (err, user) => {
+    console.log(err);
 
-    if (err) return res.sendStatus(403)
+    if (err) return res.sendStatus(403);
 
-    const userModels = await userModel.find({ email: user.username })
+    const userModels = await userModel.find({ email: user.username });
 
-    req.user = userModels
+    req.user = userModels;
 
-    next()
-  })
+    next();
+  });
 }
 
-module.exports = authenticateToken
+module.exports = authenticateToken;
