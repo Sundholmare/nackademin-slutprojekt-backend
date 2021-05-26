@@ -24,7 +24,6 @@ Router.get('/orders', loggedIn, async (req, res) => {
 
 })
 
-
 // Skapar en POST-request för att skapa en ny order
 // Lägger till middleware(loggedIn) så det körs innan min POST-request.
 Router.post('/orders', loggedIn, async (req, res) => {
