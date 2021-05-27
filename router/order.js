@@ -3,64 +3,46 @@ const Router = express.Router()
 const mongoose = require('mongoose')
 
 const orderModel = require('../models/Order')
-const loggedIn = require('../middleware/loggedIn')
+const authenticateToken = require('../middleware/loggedIn')
 
-// Lägger till middleware(loggedIn) så det körs innan min GET-request.
-Router.get('/orders', loggedIn, async (req, res) => {
+// Lägger till middleware så det körs innan min GET-request.
+Router.get('/orders', authenticateToken, async (req, res) => {
 
     let orders
-    // Om den inloggade är admin så visas alla ordrar i en lista
     if (req.user.role === 'admin') {
-        // OrderValue för admin!
-        orders = await orderModel.aggregate([
-            {
-                $lookup: {
-                    from: 'products',
-                    localField: 'items',
-                    foreignField: '_id',
-                    as: 'items'
-                }
-            },
-            {
-                $addFields: {
-                    orderValue: { 
-                        $sum: "$items.price"
-                    }
-                }
-            }
-        ])
+        // Om den inloggade är admin, så visas en lista för alla lagda ordrar
+        // och även orderValue på alla ordrar
+        // populate() kollar i items listan efter ref och tar reda på från vilken collection items kommer från.
+        orders = await orderModel.find({}).populate('items')
+
+    
     } else {
         // om inte, visas alla ordrar för den specifika inloggade användaren
-        orders = await orderModel.aggregate([
-            {
-                $match: {
-                    userId: req.user._id
-                }
-            },
-            {
-                $lookup: {
-                    from: 'products',
-                    localField: 'items',
-                    foreignField: '_id',
-                    as: 'items'
-                }
-            },
-            {
-                $addFields: {
-                    orderValue: { 
-                        $sum: "$items.price"
-                    }
-                }
-            }
-        ])
+        // OrderValue för inloggade användare.
+        orders = await orderModel.find({
+            userId: req.user._id
+        }).populate('items')
+
     }
+    // mappar genom alla orders 
+    orders = orders.map((order) => {
+        // Väljer den första produkten i ordern och räknar ut totalsumman på hela arrayen.
+        let totalOrder = [0, ...order.items].reduce((acc, cur) => {
+            return acc + cur.price
+        })
+ 
+        order.orderValue = totalOrder // lägger till egenskapen orderValue på alla orders.
+
+        return order
+    })
+
     res.json(orders)
 
 })
 
-// Skapar en POST-request för att skapa en ny order
-// Lägger till middleware(loggedIn) så det körs innan min POST-request.
-Router.post('/orders', loggedIn, async (req, res) => {
+// POST-request för att skapa en ny order
+// Lägger till middleware så det körs innan min POST-request.
+Router.post('/orders', authenticateToken, async (req, res) => {
     
     // Skapar ett object av orderModel och lägger in all data från body
     const newOrder = new orderModel({
