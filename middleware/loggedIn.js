@@ -1,20 +1,20 @@
 const jwt = require('jsonwebtoken')
-
 const userModel = require('../models/User')
 
+/* 
+* Middleware för att kontrollera tokenen är äkta
+*/
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
-  // console.log('authHeader is : ' , authHeader)
-
   const token = authHeader && authHeader.split(' ')[1]
-  // console.log('token is : ', token)
-
+ 
+  // Om token inte finns skicka 401
   if (token == null) return res.sendStatus(401)
 
+  // Verifierar token 
+  jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
 
-  jwt.verify(token, "hemligfras123treettfemsju", async (err, user) => {
-    // console.log(user)
-
+    // Om token inte kunde verifieras skicka 403.
     if (err) return res.sendStatus(403)
 
     // Retunerar ett object med den första i listan med det usernamet.
