@@ -31,6 +31,7 @@ Router.get('/orders', loggedIn, async (req, res) => {
         ])
     } else {
         // om inte, visas alla ordrar för den specifika inloggade användaren
+        // OrderValue för inloggade användare.
         orders = await orderModel.aggregate([
             {
                 $match: {
