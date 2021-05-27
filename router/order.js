@@ -5,43 +5,68 @@ const mongoose = require('mongoose')
 const orderModel = require('../models/Order')
 const loggedIn = require('../middleware/loggedIn')
 
-/* GET - Returnerar en lista på samtliga ordrar för admins,
-och ägda orders för inloggad användare */
-
+// Lägger till middleware(loggedIn) så det körs innan min GET-request.
 Router.get('/orders', loggedIn, async (req, res) => {
-    // Hämta alla befintliga ordrar och retunera dem
-    const orders = await orderModel.find({})
-    res.json(req.user)
 
-    // Retunera en lista på samtliga ordrar för admin
+    let orders
+    // Om den inloggade är admin så visas alla ordrar i en lista
+    if (req.user.role === 'admin') {
+        // OrderValue för admin!
+        orders = await orderModel.aggregate([
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items',
+                    foreignField: '_id',
+                    as: 'items'
+                }
+            },
+            {
+                $addFields: {
+                    orderValue: { 
+                        $sum: "$items.price"
+                    }
+                }
+            }
+        ])
+    } else {
+        // om inte, visas alla ordrar för den specifika inloggade användaren
+        orders = await orderModel.aggregate([
+            {
+                $match: {
+                    userId: req.user._id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items',
+                    foreignField: '_id',
+                    as: 'items'
+                }
+            },
+            {
+                $addFields: {
+                    orderValue: { 
+                        $sum: "$items.price"
+                    }
+                }
+            }
+        ])
+    }
+    res.json(orders)
 
-    // Retunera en lista på ägda orders för inloggade användare
 })
 
-
-
-
-
-
-
-
-/* POST - Skapar en ny order, se order-modell. */
-/*{
-    _id: 123,
-    timeStamp: Date.now(),
-    status: 'inProcess',
-    items: [ <productId1>, <productId2>, ... ],
-    orderValue: 999
-} */
-
 // Skapar en POST-request för att skapa en ny order
-Router.post('/orders', async (req, res) => {
-    //return res.json(req.body)
+// Lägger till middleware(loggedIn) så det körs innan min POST-request.
+Router.post('/orders', loggedIn, async (req, res) => {
     
     // Skapar ett object av orderModel och lägger in all data från body
     const newOrder = new orderModel({
         _id: new mongoose.Types.ObjectId(),
-        items: req.body.items
+        items: req.body.items,
+        userId: req.user._id
     })
 
     // Skickar sedan newOrder och sparar i databasen.
@@ -52,13 +77,9 @@ Router.post('/orders', async (req, res) => {
         console.error(err)
         return res.status(500).json(err)
     }
-
     // retunerar newOrder som ett json
     res.json(newOrder)
-
-    // Vill hämta information om användaren som skapar ordern
-
-    
+  
 })
 
 module.exports = Router

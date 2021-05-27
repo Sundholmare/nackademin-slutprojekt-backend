@@ -1,5 +1,6 @@
-const jwt = require('jsonwebtoken');
-const userModel = require('../models/User');
+const jwt = require('jsonwebtoken')
+
+const userModel = require('../models/User')
 
 /*
  * Verifierar att token är äkta
@@ -17,7 +18,6 @@ async function authenticateToken(req, res, next) {
 
   jwt.verify(token, 'hemligfras123treettfemsju', async (err, user) => {
     console.log(err);
-
 
     if (err) return res.sendStatus(403);
 
