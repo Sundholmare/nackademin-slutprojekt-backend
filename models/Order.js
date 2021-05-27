@@ -21,14 +21,6 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }]
-    // orderValue: { // teoretisk lösning på orderValue, behöver testas.
-    //     $group: {
-    //         _id: "$items",
-    //         total: {
-    //             $sum: "$price"
-    //         }
-    //     }
-    // }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

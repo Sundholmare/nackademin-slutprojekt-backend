@@ -7,18 +7,52 @@ const loggedIn = require('../middleware/loggedIn')
 
 // Lägger till middleware(loggedIn) så det körs innan min GET-request.
 Router.get('/orders', loggedIn, async (req, res) => {
-    // Hämta alla befintliga ordrar och retunera dem
-    let orders
 
+    let orders
     // Om den inloggade är admin så visas alla ordrar i en lista
     if (req.user.role === 'admin') {
-        orders = await orderModel.find({})
-
+        // OrderValue för admin!
+        orders = await orderModel.aggregate([
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items',
+                    foreignField: '_id',
+                    as: 'items'
+                }
+            },
+            {
+                $addFields: {
+                    orderValue: { 
+                        $sum: "$items.price"
+                    }
+                }
+            }
+        ])
     } else {
         // om inte, visas alla ordrar för den specifika inloggade användaren
-        orders = await orderModel.find({
-            userId: req.user._id
-        })
+        orders = await orderModel.aggregate([
+            {
+                $match: {
+                    userId: req.user._id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items',
+                    foreignField: '_id',
+                    as: 'items'
+                }
+            },
+            {
+                $addFields: {
+                    orderValue: { 
+                        $sum: "$items.price"
+                    }
+                }
+            }
+        ])
     }
     res.json(orders)
 
