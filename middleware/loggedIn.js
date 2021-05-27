@@ -1,3 +1,4 @@
+
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const userModel = require('../models/User')
@@ -6,6 +7,7 @@ const userModel = require('../models/User')
 * Middleware för att kontrollera tokenen är äkta
 */
 async function authenticateToken(req, res, next) {
+
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
  
@@ -19,13 +21,12 @@ async function authenticateToken(req, res, next) {
     if (err) return res.sendStatus(403)
 
     // Retunerar ett object med den första i listan med det usernamet.
-    const userModels = await userModel.findOne({ email: user.username })
+    const userModels = await userModel.findOne({ email: user.userMail });
 
-    req.user = userModels
+    req.user = userModels;
 
-    next()
-
-  })
+    next();
+  });
 }
 
-module.exports = authenticateToken
+module.exports = authenticateToken;
