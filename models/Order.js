@@ -20,7 +20,11 @@ const orderSchema = new mongoose.Schema({
     items: [{ // Ska kopplas med products modellen vilket gör så vi kan använda Populate()
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
-    }]
+    }],
+    orderValue: {
+        type: Number,
+        required: false,
+    }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

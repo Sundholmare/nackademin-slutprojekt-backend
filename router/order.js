@@ -13,7 +13,7 @@ Router.get('/orders', authenticateToken, async (req, res) => {
         // Om den inloggade är admin, så visas en lista för alla lagda ordrar
         // och även orderValue på alla ordrar
         // populate() kollar i items listan efter ref och tar reda på från vilken collection items kommer från.
-        orders = await orderModel.find({}).populate('items').lean()
+        orders = await orderModel.find({}).populate('items')
 
     
     } else {
@@ -21,7 +21,7 @@ Router.get('/orders', authenticateToken, async (req, res) => {
         // OrderValue för inloggade användare.
         orders = await orderModel.find({
             userId: req.user._id
-        }).populate('items').lean()
+        }).populate('items')
 
     }
     // mappar genom alla orders 
