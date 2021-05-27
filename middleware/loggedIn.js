@@ -1,30 +1,29 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-const userModel = require('../models/User')
+const userModel = require('../models/User');
+require('dotenv').config();
 
 async function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
+  const authHeader = req.headers['authorization'];
   // console.log('authHeader is : ' , authHeader)
 
-  const token = authHeader && authHeader.split(' ')[1]
+  const token = authHeader && authHeader.split(' ')[1];
   // console.log('token is : ', token)
 
-  if (token == null) return res.sendStatus(401)
+  if (token == null) return res.sendStatus(401);
 
-
-  jwt.verify(token, "hemligfras123treettfemsju", async (err, user) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
     // console.log(user)
 
-    if (err) return res.sendStatus(403)
+    if (err) return res.sendStatus(403);
 
     // Retunerar ett object med den första i listan med det usernamet.
-    const userModels = await userModel.findOne({ email: user.username })
+    const userModels = await userModel.findOne({ email: user.userMail });
 
-    req.user = userModels
+    req.user = userModels;
 
-    next()
-
-  })
+    next();
+  });
 }
 
-module.exports = authenticateToken
+module.exports = authenticateToken;
