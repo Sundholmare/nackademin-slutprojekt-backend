@@ -9,7 +9,7 @@ const loggedIn = require('../middleware/loggedIn')
 
 router.post('/products', loggedIn, (req, res) => {
 
-  /* vi kollar först vad har vi i ( req.user.role) och req.user är en attributes  som vi skapar i "loggedIn" middleware och som inehåller data om användaren som finns med i token och i vår DB  */
+  /* vi kollar först vad har vi i ( req.user.role), och (req.user )är en attributes  som vi skapar i "loggedIn" middleware och som inehåller data om användaren som finns med i token och i vår DB  */
 
     if (req.user.role === 'admin') {
 
