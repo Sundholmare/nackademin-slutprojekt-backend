@@ -9,6 +9,7 @@ async function authenticateToken(req, res, next) {
   const token = authHeader && authHeader.split(' ')[1]
   // console.log('token is : ', token)
 
+  // Om det inte finns någon token så får vi error, alltså en statuskod på 401.
   if (token == null) return res.sendStatus(401)
 
 

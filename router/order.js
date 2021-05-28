@@ -14,7 +14,6 @@ Router.get('/orders', authenticateToken, async (req, res) => {
         // och även orderValue på alla ordrar
         // populate() kollar i items listan efter ref och tar reda på från vilken collection items kommer från.
         orders = await orderModel.find({}).populate('items')
-
     
     } else {
         // om inte, visas alla ordrar för den specifika inloggade användaren
