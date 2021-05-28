@@ -3,11 +3,11 @@ const express = require('express')
 const router = express.Router()
 const Products = require('../models/Products')
 const mongoose = require('mongoose');
-const loggedIn = require('../middleware/loggedIn')
+const authenticateToken = require('../middleware/loggedIn');
 
 
 
-router.post('/products', loggedIn, (req, res) => {
+router.post('/products', authenticateToken, (req, res) => {
 
   /* vi kollar först vad har vi i ( req.user.role), och (req.user )är en attributes  som vi skapar i "loggedIn" middleware och som inehåller data om användaren som finns med i token och i vår DB  */
 

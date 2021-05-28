@@ -14,12 +14,12 @@ router.post('/register', (req, res) => {
 
     /* vi kollar först om namn eller mailet för användaren finns redan eller inte */
     User.findOne({ $or: [{ name: req.body.name }, { email: req.body.email }] }, function (err, user) {
-        if (err) console.log(err)
+        if (err) res.send(err)
         if (user) {
-            console.log(`This name: ${user.name} or this email: ${user.email} is already exists`)
+            // console.log(`This name: ${user.name} or this email: ${user.email} is already exists`)
             res.end();
         } else {
-            console.log(`This is a new user`)
+            // console.log(`This is a new user`)
             /*  Här kollar vi om båda password och repeatPassword är lika */
             if (checkRepeatPassword(req.body.password, req.body.repeatPassword)) {
                 /* om de lika vi hashar lösenordet  och sedan spara den i db*/
@@ -41,17 +41,17 @@ router.post('/register', (req, res) => {
                         })
                         newUser.save((err) => {
                             if (err) {
-                                console.log(err)
+                                // console.log(err)
                                 res.json(err)
                             }
                             else {
-                                console.log(newUser)
+                                // console.log(newUser)
                                 res.json(newUser)
                             }
                         })
                     }
                 })
-            } else console.log(`Different passwords`)
+            } else res.send(`Different passwords`)
         }
     })
 })
