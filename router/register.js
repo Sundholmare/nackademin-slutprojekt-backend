@@ -5,11 +5,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 const mongoose = require('mongoose');
 
-
-
-
-
-
+/* för att kolla att båda password och repeatPassword är lika */
 const checkRepeatPassword = (pass1, pass2) => {
     if (pass1 === pass2) return true
 }
@@ -40,7 +36,8 @@ router.post('/register', (req, res) => {
                                 street: req.body.adress.street,
                                 zip: req.body.adress.zip,
                                 city: req.body.adress.city,
-                            }
+                            },
+                            orderHistory:[],
                         })
                         newUser.save((err) => {
                             if (err) {
@@ -58,13 +55,6 @@ router.post('/register', (req, res) => {
         }
     })
 })
-
-
-
-
-
-
-
 
 
 module.exports = router;

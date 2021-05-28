@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }],
-    orderValue: {
+    orderValue: { // Egenskap på ordern så man kan lägga ihop totalsumman för alla orders.
         type: Number,
         required: false,
     }
