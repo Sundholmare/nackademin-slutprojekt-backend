@@ -24,8 +24,16 @@ app.use('/api', authRouter)
 // connect to db
 mongoose.connect(
   process.env.DB_CONNECT,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log('connected to db')
-)
+  { useNewUrlParser: true, useUnifiedTopology: true })
+
+
+
+const db = mongoose.connection
+db.on('error', (err) => {
+    console.error(err)
+})
+db.once('open', () => {
+    console.log('connected to db')
+})
 
 module.exports = app
