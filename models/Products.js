@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema({
         minLength : 3,
         maxLength : 15
     },
-    longDesc: {
+    longDesc: { // description
         type: String,
         required: true,
         minLength : 15,

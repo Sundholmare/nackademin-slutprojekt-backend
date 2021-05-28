@@ -6,10 +6,6 @@ const saltRounds = 10
 const mongoose = require('mongoose');
 
 
-
-
-
-
 const checkRepeatPassword = (pass1, pass2) => {
     if (pass1 === pass2) return true
 }
