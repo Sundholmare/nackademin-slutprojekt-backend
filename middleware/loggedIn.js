@@ -18,7 +18,7 @@ async function authenticateToken(req, res, next) {
   jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
     if (err) return res.sendStatus(403)
 
-    // Retunerar ett object med den första i listan med det usernamet/userEmail ? 
+    // Retunerar ett object med den första i listan med det userEmail
     const userModels = await userModel.findOne({ email: user.userMail })
 
     req.user = userModels

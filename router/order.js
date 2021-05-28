@@ -5,18 +5,16 @@ const mongoose = require('mongoose')
 const orderModel = require('../models/Order')
 const authenticateToken = require('../middleware/loggedIn')
 
+// Lista fram alla orders för admin, samt inloggade användare.
 // Lägger till middleware så det körs innan min GET-request.
 Router.get('/orders', authenticateToken, async (req, res) => {
 
     let orders
     if (req.user.role === 'admin') {
-        // Om den inloggade är admin, så visas en lista för alla lagda ordrar
-        // och även orderValue på alla ordrar
         // populate() kollar i items listan efter ref och tar reda på från vilken collection items kommer från.
         orders = await orderModel.find({}).populate('items')
     } else {
-        // om inte, visas alla ordrar för den specifika inloggade användaren
-        // OrderValue för inloggade användare.
+        // om inte, visas alla ordrar & orderValue för den specifika inloggade användaren
         orders = await orderModel.find({
             userId: req.user._id
         }).populate('items')
@@ -25,6 +23,7 @@ Router.get('/orders', authenticateToken, async (req, res) => {
     // mappar genom alla orders 
     orders = orders.map((order) => {
         // Väljer den första produkten i ordern och räknar ut totalsumman på hela arrayen.
+        // accumulator & currentValue
         let totalOrder = [0, ...order.items].reduce((acc, cur) => {
             return acc + cur.price
         })
